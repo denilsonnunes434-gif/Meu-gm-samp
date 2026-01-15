@@ -1,58 +1,88 @@
 #include <a_samp>
 
+// --- Variaveis de Controle ---
+new PlayerAdmin[MAX_PLAYERS];
+new bool:EstaInvisivel[MAX_PLAYERS];
+
 main()
 {
-	print("\n----------------------------------");
-	print(" MOZAMBIQUE ROLEPLAY MOBILE ON!");
-	print("----------------------------------\n");
+    print("\n----------------------------------");
+    print(" MOZAMBIQUE ROLEPLAY MOBILE ON!");
+    print("----------------------------------\n");
 }
 
 public OnGameModeInit()
 {
-	SetGameModeText("Mozambique RP v1.0");
-	// Posição de nascimento (Skin 0)
-	AddPlayerClass(0, 1958.3783, 1343.1572, 15.3746, 269.1425, 0, 0, 0, 0, 0, 0);
-	return 1;
+    SetGameModeText("Mozambique RP v1.0");
+    AddPlayerClass(0, 1958.3783, 1343.1572, 15.3746, 269.1425, 0, 0, 0, 0, 0, 0);
+    return 1;
 }
 
 public OnPlayerConnect(playerid)
 {
-	// Mensagem de boas-vindas colorida
-	SendClientMessage(playerid, 0x00FF00FF, "========================================");
-	SendClientMessage(playerid, -1, " Bem-vindo ao {FFFF00}MOZAMBIQUE ROLEPLAY MOBILE!");
-	SendClientMessage(playerid, -1, " Tenha um bom jogo no nosso servidor mobile.");
-	SendClientMessage(playerid, 0x00FF00FF, "========================================");
-	return 1;
+    PlayerAdmin[playerid] = 0; // Começa como jogador comum
+    EstaInvisivel[playerid] = false;
+    SendClientMessage(playerid, 0x00FF00FF, "Bem-vindo ao MOZAMBIQUE ROLEPLAY!");
+    return 1;
 }
+
+// Teleporte pelo Click no Mapa (Apenas Admin)
+public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
+{
+    if(PlayerAdmin[playerid] >= 1)
+    {
+        SetPlayerPos(playerid, fX, fY, fZ);
+        SendClientMessage(playerid, 0xFFFF00FF, "Teleportado com sucesso!");
+    }
+    return 1;
+}
+
 public OnPlayerCommandText(playerid, cmdtext[])
 {
-    if (strcmp("/vida", cmdtext, true, 5) == 0)
+    // COMANDO PARA VIRAR DONO (Nivel 5)
+    if (strcmp("/virardono", cmdtext, true) == 0)
     {
-        SetPlayerHealth(playerid, 100.0);
-        SendClientMessage(playerid, 0xFF0000FF, "Sua vida foi restaurada!");
+        PlayerAdmin[playerid] = 5;
+        SendClientMessage(playerid, 0x00FFFFFF, "Agora voce e o DONO do servidor!");
         return 1;
     }
 
-    if (strcmp("/colete", cmdtext, true, 7) == 0)
+    // COMANDO INVISIVEL / VISIVEL (Apenas Admin)
+    if (strcmp("/invisivel", cmdtext, true) == 0)
     {
-        SetPlayerArmour(playerid, 100.0);
-        SendClientMessage(playerid, 0x0000FFFF, "Você recebeu um colete!");
-        return 1;
-    if (strcmp("/aeroporto", cmdtext, true, 10) == 0)
-    {
-        SetPlayerPos(playerid, 1958.3783, -2256.3457, 13.5469);
-        SendClientMessage(playerid, 0xFFFF00FF, "Bem-vindo ao Aeroporto!");
+        if(PlayerAdmin[playerid] < 1) return SendClientMessage(playerid, 0xFF0000FF, "Sem permissao!");
+        
+        if(EstaInvisivel[playerid] == false)
+        {
+            SetPlayerVirtualWorld(playerid, 999); // Vai para outro mundo (ninguem te ve)
+            EstaInvisivel[playerid] = true;
+            SendClientMessage(playerid, 0xFFFF00FF, "Voce agora esta INVISIVEL!");
+        }
+        else
+        {
+            SetPlayerVirtualWorld(playerid, 0); // Volta para o mundo normal
+            EstaInvisivel[playerid] = false;
+            SendClientMessage(playerid, 0xFFFF00FF, "Voce agora esta VISIVEL!");
+        }
         return 1;
     }
 
-    if (strcmp("/carro", cmdtext, true, 6) == 0)
+    // COMANDO DE SKIN (Apenas Admin)
+    if (strcmp("/skin", cmdtext, true) == 0)
     {
-        new Float:x, Float:y, Float:z;
-        GetPlayerPos(playerid, x, y, z);
-        CreateVehicle(411, x + 2, y, z, 0.0, -1, -1, 100); 
-        SendClientMessage(playerid, 0x00FFFFFF, "Infernus criado com sucesso!");
+        if(PlayerAdmin[playerid] < 1) return SendClientMessage(playerid, 0xFF0000FF, "Sem permissao!");
+        SetPlayerSkin(playerid, 217); // Skin de teste (Dono)
+        SendClientMessage(playerid, 0xFFFF00FF, "Skin alterada!");
         return 1;
     }
+
+    // COMANDO DE DINHEIRO (Apenas Admin)
+    if (strcmp("/grana", cmdtext, true) == 0)
+    {
+        if(PlayerAdmin[playerid] < 1) return SendClientMessage(playerid, 0xFF0000FF, "Sem permissao!");
+        GivePlayerMoney(playerid, 1000000);
+        return 1;
+    }
+
     return 0;
 }
-
