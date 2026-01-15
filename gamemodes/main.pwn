@@ -38,6 +38,21 @@ public OnPlayerCommandText(playerid, cmdtext[])
         SetPlayerArmour(playerid, 100.0);
         SendClientMessage(playerid, 0x0000FFFF, "Você recebeu um colete!");
         return 1;
+    if (strcmp("/aeroporto", cmdtext, true, 10) == 0)
+    {
+        SetPlayerPos(playerid, 1958.3783, -2256.3457, 13.5469);
+        SendClientMessage(playerid, 0xFFFF00FF, "Bem-vindo ao Aeroporto!");
+        return 1;
+    }
+
+    if (strcmp("/carro", cmdtext, true, 6) == 0)
+    {
+        new Float:x, Float:y, Float:z;
+        GetPlayerPos(playerid, x, y, z);
+        CreateVehicle(411, x + 2, y, z, 0.0, -1, -1, 100); 
+        SendClientMessage(playerid, 0x00FFFFFF, "Infernus criado com sucesso!");
+        return 1;
     }
     return 0;
 }
+
