@@ -2,21 +2,25 @@
 
 main()
 {
-    print("\n----------------------------------");
-    print(" Meu Servidor SAMP Iniciado!");
-    print("----------------------------------\n");
+	print("\n----------------------------------");
+	print(" MOZAMBIQUE ROLEPLAY MOBILE ON!");
+	print("----------------------------------\n");
 }
 
 public OnGameModeInit()
 {
-    SetGameModeText("Versao 1.0");
-    // Posição inicial de spawn (Skin 0)
-    AddPlayerClass(0, 1958.3783, 1343.1572, 15.3746, 269.1425, 0, 0, 0, 0, 0, 0);
-    return 1;
+	SetGameModeText("Mozambique RP v1.0");
+	// Posição de nascimento (Skin 0)
+	AddPlayerClass(0, 1958.3783, 1343.1572, 15.3746, 269.1425, 0, 0, 0, 0, 0, 0);
+	return 1;
 }
 
 public OnPlayerConnect(playerid)
 {
-    SendClientMessage(playerid, -1, "Bem-vindo ao servidor criado pelo GitHub!");
-    return 1;
+	// Mensagem de boas-vindas colorida
+	SendClientMessage(playerid, 0x00FF00FF, "========================================");
+	SendClientMessage(playerid, -1, " Bem-vindo ao {FFFF00}MOZAMBIQUE ROLEPLAY MOBILE!");
+	SendClientMessage(playerid, -1, " Tenha um bom jogo no nosso servidor mobile.");
+	SendClientMessage(playerid, 0x00FF00FF, "========================================");
+	return 1;
 }
