@@ -24,3 +24,20 @@ public OnPlayerConnect(playerid)
 	SendClientMessage(playerid, 0x00FF00FF, "========================================");
 	return 1;
 }
+public OnPlayerCommandText(playerid, cmdtext[])
+{
+    if (strcmp("/vida", cmdtext, true, 5) == 0)
+    {
+        SetPlayerHealth(playerid, 100.0);
+        SendClientMessage(playerid, 0xFF0000FF, "Sua vida foi restaurada!");
+        return 1;
+    }
+
+    if (strcmp("/colete", cmdtext, true, 7) == 0)
+    {
+        SetPlayerArmour(playerid, 100.0);
+        SendClientMessage(playerid, 0x0000FFFF, "Você recebeu um colete!");
+        return 1;
+    }
+    return 0;
+}
